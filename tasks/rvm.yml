@@ -5,7 +5,7 @@
   register: rvm_binary
 
 - name: Detect rvm installer
-  stat: path='{{ rvm1_temp_download_path }}/rvm-installer.sh'
+  stat: path='{{ rvm1_temp_download_path }}/{{ rvm1_user }}-rvm-installer.sh'
   register: rvm_installer
 
 - name: Detect current rvm version
@@ -17,12 +17,12 @@
 - name: Install rvm installer
   get_url:
     url: '{{ rvm1_rvm_latest_installer }}'
-    dest: '{{ rvm1_temp_download_path }}/rvm-installer.sh'
+    dest: '{{ rvm1_temp_download_path }}/{{ rvm1_user }}-rvm-installer.sh'
   when: not rvm_installer.stat.exists
 
 - name: Configure rvm installer
   file:
-    path: '{{ rvm1_temp_download_path }}/rvm-installer.sh'
+    path: '{{ rvm1_temp_download_path }}/{{ rvm1_user }}-rvm-installer.sh'
     mode: 0755
   when: not rvm_binary.stat.exists
 
@@ -33,7 +33,7 @@
 
 - name: Install rvm
   command: >
-    {{ rvm1_temp_download_path }}/rvm-installer.sh {{ rvm1_rvm_version }}
+    {{ rvm1_temp_download_path }}/{{ rvm1_user }}-rvm-installer.sh {{ rvm1_rvm_version }}
     --path {{ rvm1_install_path }} {{ rvm1_install_flags }}
   when: not rvm_binary.stat.exists
 
